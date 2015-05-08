@@ -1,4 +1,8 @@
 #!/bin/bash
+# accepts single argument: domain (e.g. google.com)
+# pulls / for that domain, finds all domains listed, and gets IPv4 addresses 
+# for those domains. If multiple domains reside at the same IP, there will be 
+# duplicates in the output. 
 
 wget -qqq "$1" -O /tmp/index.html
 

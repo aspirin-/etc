@@ -1,4 +1,5 @@
 #!/bin/bash
+# loads local networks from ifconfig and sends out a pingsweep
 
 for thing in $( \
     ifconfig \

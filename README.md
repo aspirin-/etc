@@ -12,3 +12,15 @@ duplicates in the output.
 ## lan-ps.sh
 
 loads local networks from ifconfig and sends out a pingsweep
+
+## pagepicker-bf.js
+
+Written while working on the hack.darkn3ss.com game (lvl 7). 
+
+pagepicker.php takes a 'nextPageUrl' (3-digit number) and a 'urid' (arbitrary 
+string; username or username+password combination). With an adequate 
+dictionary, it should be possible to determine all 'nextPageUrl' + 'urid' 
+pairs. 
+
+This turned out to be unrelated to the solution of the puzzle, but I  gained 
+some valuable knowledge. 

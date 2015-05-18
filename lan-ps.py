@@ -7,7 +7,7 @@
 
 import sys
 from netifaces import interfaces, ifaddresses, AF_INET
-from scapy.all import send, ICMP, IP 
+from scapy.all import sr1, ICMP, IP 
 
 def get_base_addresses(): 
     base_addresses = []
@@ -38,6 +38,7 @@ base_addresses = get_base_addresses()
 print base_addresses
 
 try: 
-    send(IP(dst="172.16.8.1")/ICMP()) # Useless, just a test. Requires root.
+    ping = sr1(IP(dst="192.168.1.2")/ICMP()/"X", timeout = 0.2) # Useless, just a test. Requires root.
+    ping.show()
 except Exception, the_exception: 
     print the_exception

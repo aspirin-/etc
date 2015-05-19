@@ -45,12 +45,17 @@ def do_ping(input_address):
         return None
 
 
+def announce_if_alive(ping_result):
+    if ping_result: 
+        print ping_result + " is up"
+
+
 base_addresses = get_base_addresses()
 print base_addresses
 
 try: 
     destin = "192.168.1.8"
-    print ping.quiet_ping(destin, 0.2, 1)[0]
-    ping.verbose_ping("google.com", 0.1, 1) 
+    trial = do_ping(destin)
+    announce_if_alive(trial)
 except Exception, the_exception: 
     print the_exception

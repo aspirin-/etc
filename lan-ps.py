@@ -29,14 +29,17 @@ def get_base_addresses():
     return base_addresses
 
 
-# Next: Define sequencing
-# input is list of base addresses; from each base address, strip last octet; 
-# for each address in [first-three-octets].0/24, icmp_echo()
+def begin_sequence(base_address): 
+    numbers = '1234567890'
+    stub = base_address.rstrip(numbers)
+    for number in range(254):
+        new_ipaddr = stub + str(number + 1)
+        result = do_ping(new_ipaddr)
+        announce_if_alive(result)
 
 
-# Next: Define icmp echo function
 def do_ping(input_address):
-    timeout = 0.2
+    timeout = 0.1
     number_to_send = 1
     ping_result = ping.quiet_ping(input_address, timeout, number_to_send)
     if ping_result[0] == 0: # percent dropped
@@ -50,12 +53,9 @@ def announce_if_alive(ping_result):
         print ping_result + " is up"
 
 
-base_addresses = get_base_addresses()
-print base_addresses
-
-try: 
-    destin = "192.168.1.8"
-    trial = do_ping(destin)
-    announce_if_alive(trial)
-except Exception, the_exception: 
-    print the_exception
+if __name__ == "__main__": 
+    try:
+        for address in get_base_addresses(): 
+            begin_sequence(address)
+    except Exception, the_exception: 
+        print the_exception

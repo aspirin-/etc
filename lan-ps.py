@@ -4,10 +4,11 @@
 #
 # Dependencies: 
 #   netifaces (pip install netifaces) 
+#   ping (pip install ping)
 
 import sys
 from netifaces import interfaces, ifaddresses, AF_INET
-from scapy.all import sr1, ICMP, IP 
+import ping 
 
 def get_base_addresses(): 
     base_addresses = []
@@ -32,13 +33,24 @@ def get_base_addresses():
 # input is list of base addresses; from each base address, strip last octet; 
 # for each address in [first-three-octets].0/24, icmp_echo()
 
+
 # Next: Define icmp echo function
+def do_ping(input_address):
+    timeout = 0.2
+    number_to_send = 1
+    ping_result = ping.quiet_ping(input_address, timeout, number_to_send)
+    if ping_result[0] == 0: # percent dropped
+        return input_address
+    else: 
+        return None
+
 
 base_addresses = get_base_addresses()
 print base_addresses
 
 try: 
-    ping = sr1(IP(dst="192.168.1.2")/ICMP()/"X", timeout = 0.2) # Useless, just a test. Requires root.
-    ping.show()
+    destin = "192.168.1.8"
+    print ping.quiet_ping(destin, 0.2, 1)[0]
+    ping.verbose_ping("google.com", 0.1, 1) 
 except Exception, the_exception: 
     print the_exception

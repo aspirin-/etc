@@ -1,0 +1,26 @@
+# After gaining a low-privileged shell on a windows host, it is important to 
+# gather information about the host's configuration in order to escalate 
+# privileges. 
+# 
+# Copy the entire block of commands and paste them into your low-privileged 
+# shell; txt files will be created in your working dir. 
+# 
+# Credit goes to b33f (Ruben Boonen)
+# http://www.fuzzysecurity.com/tutorials/16.html
+# Also check out: http://www.fuzzysecurity.com/tutorials/files/wmic_info.rar
+
+systeminfo | findstr /B /C:"OS Name" /C:"OS Version" > system-info.txt
+hostname >> system-info.txt
+echo %username% >> user-info.txt
+net users >> user-info.txt
+net user %username% >> user-info.txt
+ipconfig /all > net-info.txt
+route print >> net-info.txt
+arp -A >> net-info.txt
+netstat -ano >> net-info.txt
+netsh firewall show state >> net-info.txt
+netsh firewall show config >> net-info.txt
+schtasks /query /fo LIST /v > tasks-info.txt
+tasklist /SVC >> tasks-info.txt
+net start > services-info.txt
+DRIVERQUERY > drivers-info.txt

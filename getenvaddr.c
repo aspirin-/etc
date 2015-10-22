@@ -1,4 +1,4 @@
-# Source: hacktracking.blogspot.com
+// Source: hacktracking.blogspot.com
 
 #include <stdio.h>
 #include <stdlib.h>

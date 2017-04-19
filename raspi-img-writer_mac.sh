@@ -16,9 +16,7 @@ show_disks(){
 
 choose_disk(){
     # read user's input and return it
-    user_input=$(
-        read -p "Choose disk IDENTIFIER (do not type full path): "
-        )
+    read -p "Choose disk IDENTIFIER (do not type full path): " user_input
     echo "/dev/$user_input"
 }
 
@@ -26,7 +24,7 @@ warn_before_continue(){ # chosen_disk
     # pause and ensure the user's choice is really what they want
     # This is the Point of No Return!
     chosen_disk="$1"
-    printf "WARNING: Image %s will be written to %s. This cannot be undone.\n" "$RASPI_IMG" "$chosen_disk"
+    printf "\n### WARNING ###\nImage %s will be written to %s.\nThis cannot be undone.\n" "$RASPI_IMG" "$chosen_disk"
     read -s -n1 -p "Press ENTER to continue; CTRL-C to exit..."
 }
 
@@ -34,7 +32,7 @@ write_img_to_disk(){ # chosen_disk
     # perform action
     chosen_disk="$1"
     export chosen_disk
-    printf "Writing %s to %s...\n" "$RASPI_IMG" "$chosen_disk"
+    printf "\n\nWriting %s to %s...\n" "$RASPI_IMG" "$chosen_disk"
     img_filesize=$(
         get_img_filesize
         )
@@ -44,16 +42,16 @@ write_img_to_disk(){ # chosen_disk
         | sed 's./dev/./dev/r.'
         )
 
+    diskutil unmountDisk "$chosen_disk"
     # sudo -v to grab sudo creds without interrupting dd
-    # sudo -v
-    # dd bs=1m if="$RASPI_IMG" \
-    # | pv -s "$img_filesize" \
-    # | sudo dd bs=1m of="$raw_disk"
+    sudo -v
+    dd bs=1m if="$RASPI_IMG" \
+    | pv -s "$img_filesize" \
+    | sudo dd bs=1m of="$raw_disk"
 
-    printf "filesize = %s\n" "$img_filesize"
-    printf "reading from %s...\n" "$RASPI_IMG"
-    printf "writing to %s...\n" "$raw_disk"
-    printf "complete.\n"
+    printf "Image write complete. Ejecting $chosen_disk...\n"
+    diskutil eject "$chosen_disk"
+    printf "Done."
 }
 
 get_img_filesize(){
@@ -71,7 +69,7 @@ main(){
     else
         show_disks
         chosen_disk=$(choose_disk)
-        warn_before_continue "$chosen_disk"
+        warn_before_continue $chosen_disk
         write_img_to_disk "$chosen_disk"
     fi
 }

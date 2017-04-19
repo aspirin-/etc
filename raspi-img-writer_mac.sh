@@ -51,7 +51,7 @@ write_img_to_disk(){ # chosen_disk
 
     printf "Image write complete. Ejecting $chosen_disk...\n"
     diskutil eject "$chosen_disk"
-    printf "Done."
+    printf "\nWrite complete!\n"
 }
 
 get_img_filesize(){

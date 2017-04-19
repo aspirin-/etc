@@ -69,7 +69,7 @@ main(){
         exit 1
     else
         show_disks
-        chosen_disk=choose_disk
+        chosen_disk=$(choose_disk)
         warn_before_continue "$chosen_disk"
         write_img_to_disk "$chosen_disk"
     fi

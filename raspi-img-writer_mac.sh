@@ -41,7 +41,7 @@ write_img_to_disk(){ # chosen_disk
 
     raw_disk=$(
         echo "$chosen_disk" \
-        | sed 's./dev/./dev/r'
+        | sed 's./dev/./dev/r.'
         )
 
     # sudo -v to grab sudo creds without interrupting dd

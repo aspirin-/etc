@@ -50,6 +50,7 @@ write_img_to_disk(){ # chosen_disk
     # | pv -s "$img_filesize" \
     # | sudo dd bs=1m of="$raw_disk"
 
+    printf "filesize = %s\n" "$img_filesize"
     printf "reading from %s...\n" "$RASPI_IMG"
     printf "writing to %s...\n" "$raw_disk"
     printf "complete.\n"

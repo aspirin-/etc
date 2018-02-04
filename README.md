@@ -22,5 +22,4 @@ string; username or username+password combination). With an adequate
 dictionary, it should be possible to determine all 'nextPageUrl' + 'urid' 
 pairs. 
 
-This turned out to be unrelated to the solution of the puzzle, but I  gained 
-some valuable knowledge. 
+This turned out to be unrelated to the solution of the puzzle, but I learned something. 

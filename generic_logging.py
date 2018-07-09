@@ -2,10 +2,15 @@
 # -*- coding: UTF-8 -*-
 
 """
-When writing a package, set up generic logging by doing this: 
+When writing a package, set up generic logging by importing 'logging', then use
+logging.info() (, etc.). 
 
 import logging
-logging.info('hi')
+
+class Genera(object):
+    def __init__(self):
+        logging.info('initializing Genera')
+
 """
 
 import logging
@@ -52,7 +57,7 @@ def main():
 
     try:
         logger * 2
-    except Exception as e:
+    except Exception:
         logger.exception("Exception! Cannot multiply 'logging.Logger'. Traceback:")
 
     logger.debug("The program continues.")

@@ -1,42 +1,49 @@
+#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
+
+"""
+When writing a package, set up generic logging by doing this: 
+
+import logging
+logging.info('hi')
+"""
+
 import logging
 
-LOGGING_FORMAT = '%(levelname)s: %(funcName)s | %(message)s'
+from logzero import LogFormatter as _lzlf
+
+LOGFILE_FORMAT = '[%(levelname)1.1s %(asctime)s %(module)s:%(lineno)d] %(message)s'
 
 
-def generic_logger():
-    """Just in case a mistake is made, classes can use this generic logger."""
-    logger = logging.getLogger("cli_logger")
-    logger.setLevel(logging.DEBUG)
+def make_logger(logfile: str = '', loglevel: int = logging.DEBUG) -> logging.Logger:
+    logger = logging.getLogger()
 
-    return logger
+    if logfile:
+        fh_handler = logging.FileHandler(logfile)
+        # set logging level for file handler
+        fh_handler.setLevel(logging.DEBUG)
+        fh_handler.setFormatter(
+            logging.Formatter(LOGFILE_FORMAT))
+        logger.addHandler(fh_handler)
 
+    ch_handler = logging.StreamHandler()
+    ch_handler.setFormatter(_lzlf())
+    ch_handler.setLevel(loglevel)  # set logging level for console handler
+    logger.addHandler(ch_handler)
+    logger.setLevel(logging.DEBUG)  # set overall logging level
 
-def make_logging(debug, verbose, quiet):
-    """Set up logging and level of verbosity"""
-    logger = logging.getLogger("cli_logger")
-    logger.setLevel(logging.DEBUG)
-    formatter = logging.Formatter(LOGGING_FORMAT)
-    ch = logging.StreamHandler()
-    ch.setFormatter(formatter)
+    logger.info("Logging set up.")
 
-    if debug:
-        ch.setLevel(logging.DEBUG)
-    elif verbose:
-        ch.setLevel(logging.INFO)
-    elif quiet:
-        ch.setLevel(logging.CRITICAL)
+    if logfile:
+        logger.info("Logfile: {}".format(logfile))
 
-    if not debug and not verbose and not quiet:
-        ch.setLevel(logging.WARNING)
-
-    logger.addHandler(ch)
-    logger.info('Verbosity set.')
     return logger
 
 
 def main():
     """Example function"""
-    logger = make_logging(debug=True, verbose=False, quiet=False)
+    logger = make_logger(
+        logfile='/tmp/generic_logging.py.log', loglevel=logging.DEBUG)
     logger.debug("This is an example of basic logging.")
     logger.info("This is info-level.")
     logger.warning("Warning-level.")
@@ -46,9 +53,10 @@ def main():
     try:
         logger * 2
     except Exception as e:
-        logger.exception("And this is an exception log. Traceback:")
+        logger.exception("Exception! Cannot multiply 'logging.Logger'. Traceback:")
 
     logger.debug("The program continues.")
+
 
 if __name__ == '__main__':
     main()
